@@ -1,0 +1,8 @@
+@ Este es un comentario
+CARGA archivo1.csv
+SEPARA ,
+AGREGA columna1
+INVALIDO acá
+GUARDA archivo2.csv
+
+variable1 = 10
