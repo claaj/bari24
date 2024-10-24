@@ -9,8 +9,8 @@ class TipoToken(Enum):
     KEYWORD = auto()
     SEPARADOR = auto()
     NOMBREARCHIVO = auto()
-    ASIGNACION = auto()
     INVALIDO = auto()
+    FINDELINEA = auto()
 
 
 class Token:
@@ -35,6 +35,7 @@ class Lexer:
         self.simbols = simbol_table
         self.linea_cache = []
         self.token_cache = 0
+        self.get_line()
 
     def analizar(self, palabra: str) -> Token:
         tipo_actual: TipoToken
@@ -49,8 +50,6 @@ class Lexer:
             tipo_actual = TipoToken.NUMERO
         elif palabra in self.SEPARADORES:
             tipo_actual = TipoToken.SEPARADOR
-        elif palabra == "=":
-            tipo_actual = TipoToken.ASIGNACION
         else:
             tipo_actual = TipoToken.INVALIDO
         return Token(tipo_actual, palabra, self.linea_actual)
@@ -58,20 +57,26 @@ class Lexer:
     def __iter__(self):
         return self
 
+    def get_line(self):
+        self.token_cache = 0
+        self.linea_cache = ["@"]
+        while len(self.linea_cache) == 0\
+            or (len(self.linea_cache) > 0
+                and self.linea_cache[0].startswith("@")):
+            self.linea_cache = self.archivo.readline()
+            if not self.linea_cache:
+                raise StopIteration()
+            self.linea_cache = self.linea_cache.strip().split()
+            self.linea_actual += 1
+
     def __next__(self) -> Token:
+        token = ''
         if len(self.linea_cache) == self.token_cache:
-            self.token_cache = 0
-            self.linea_cache = ["@"]
-            while len(self.linea_cache) == 0\
-                or (len(self.linea_cache) > 0
-                    and self.linea_cache[0].startswith("@")):
-                self.linea_cache = self.archivo.readline()
-                if not self.linea_cache:
-                    raise StopIteration()
-                self.linea_cache = self.linea_cache.strip().split()
-                self.linea_actual += 1
-        token = self.analizar(self.linea_cache[self.token_cache])
-        self.token_cache += 1
+            token = Token(TipoToken.FINDELINEA, '', self.linea_actual)
+            self.get_line()
+        else:
+            token = self.analizar(self.linea_cache[self.token_cache])
+            self.token_cache += 1
         return token
 
 
