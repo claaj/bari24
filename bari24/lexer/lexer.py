@@ -1,32 +1,11 @@
 import re
-from enum import Enum, auto
 from typing import Set
 
-
-class TipoToken(Enum):
-    VARIABLE = auto()
-    NUMERO = auto()
-    KEYWORD = auto()
-    SEPARADOR = auto()
-    NOMBREARCHIVO = auto()
-    INVALIDO = auto()
-    FINDELINEA = auto()
-
-
-class Token:
-    def __init__(self, tipo: TipoToken, valor: str, linea: int):
-        self.tipo = tipo
-        self.valor = valor
-        self.num_linea = linea
-
-    def __repr__(self) -> str:
-        return f"Token(Tipo: {self.tipo}, Valor: {self.valor}," \
-            + f" Linea: {self.num_linea})"
+from tipos import TipoToken, Token
 
 
 class Lexer:
-    KEYWORDS: Set[str] = {"CARGA", "GUARDA",
-                          "SEPARA", "AGREGA", "ENCABEZADO", "TODO"}
+    KEYWORDS: Set[str] = {"CARGA", "GUARDA", "SEPARA", "AGREGA", "ENCABEZADO", "TODO"}
     SEPARADORES: Set[str] = {",", ";"}
 
     def __init__(self, ruta_archivo: str, simbol_table: dict):
@@ -60,9 +39,9 @@ class Lexer:
     def get_line(self):
         self.token_cache = 0
         self.linea_cache = ["@"]
-        while len(self.linea_cache) == 0\
-            or (len(self.linea_cache) > 0
-                and self.linea_cache[0].startswith("@")):
+        while len(self.linea_cache) == 0 or (
+            len(self.linea_cache) > 0 and self.linea_cache[0].startswith("@")
+        ):
             self.linea_cache = self.archivo.readline()
             if not self.linea_cache:
                 raise StopIteration()
@@ -70,9 +49,9 @@ class Lexer:
             self.linea_actual += 1
 
     def __next__(self) -> Token:
-        token = ''
+        token = ""
         if len(self.linea_cache) == self.token_cache:
-            token = Token(TipoToken.FINDELINEA, '', self.linea_actual)
+            token = Token(TipoToken.FINDELINEA, "", self.linea_actual)
             self.get_line()
         else:
             token = self.analizar(self.linea_cache[self.token_cache])

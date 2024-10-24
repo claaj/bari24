@@ -48,8 +48,10 @@
 # Tb := SEPARADOR(,) Tc
 # Tc := NUMERO
 
-from enum import Enum, List, auto
-from bari24_lexer_iter import Lexer, TipoToken, Token
+from enum import Enum, auto
+from typing import List, Tuple
+
+from bari24.lexer import Lexer, TipoToken, Token
 
 
 class TipoSentencia(Enum):
@@ -59,7 +61,7 @@ class TipoSentencia(Enum):
     AGREGA = auto()
     ENCABEZADO = auto()
     TODO = auto()
-    INVALIDA = auto()
+    INVALIDO = auto()
 
 
 class Sentencia:
@@ -69,8 +71,10 @@ class Sentencia:
         self.num_linea = linea
 
     def __repr__(self) -> str:
-        return f"Sentencia(Tipo: {self.tipo}, Valor: {self.valor}," \
+        return (
+            f"Sentencia(Tipo: {self.tipo}, Valor: {self.valor},"
             + f" Linea: {self.num_linea})"
+        )
 
 
 class Parser:
@@ -129,7 +133,7 @@ class Parser:
             pass
         return Sentencia(tipo, valor, linea)
 
-    def Ca(self) -> (bool, [Token]):
+    def Ca(self) -> Tuple[bool, List[Token]]:
         try:
             next_token = self.lexi.__next__()
             if next_token.tipo == TipoToken.NOMBREARCHIVO:
@@ -139,18 +143,18 @@ class Parser:
         except ():
             return (False, [])
 
-    def Cb(self) -> (bool, [Token]):
+    def Cb(self) -> Tuple[bool, List[Token]]:
         try:
             next_token = self.lexi.__next__()
             if next_token.tipo == TipoToken.SEPARADOR:
-                if next_token.valor == ',':
+                if next_token.valor == ",":
                     (valida, val) = self.Cc()
                     return (valida, [next_token, *val])
             return (False, [next_token])
         except ():
             return (False, [])
 
-    def Cc(self) -> (bool, [Token]):
+    def Cc(self) -> Tuple[bool, List[Token]]:
         try:
             next_token = self.lexi.__next__()
             if next_token.tipo == TipoToken.VARIABLE:
@@ -160,18 +164,18 @@ class Parser:
         except ():
             return (False, [])
 
-    def Cd(self) -> (bool, [Token]):
+    def Cd(self) -> Tuple[bool, List[Token]]:
         try:
             next_token = self.lexi.__next__()
             if next_token.tipo == TipoToken.SEPARADOR:
-                if next_token.valor == ',':
+                if next_token.valor == ",":
                     (valida, val) = self.Ce()
                     return (valida, [next_token, *val])
             return (False, [next_token])
         except ():
             return self.finSentencia()
 
-    def Ce(self) -> (bool, [Token]):
+    def Ce(self) -> Tuple[bool, List[Token]]:
         try:
             next_token = self.lexi.__next__()
             if next_token.tipo == TipoToken.SEPARADOR:
@@ -181,7 +185,7 @@ class Parser:
         except ():
             return (False, [])
 
-    def Ga(self) -> (bool, [Token]):
+    def Ga(self) -> Tuple[bool, List[Token]]:
         try:
             next_token = self.lexi.__next__()
             if next_token.tipo == TipoToken.NOMBREARCHIVO:
@@ -191,18 +195,18 @@ class Parser:
         except ():
             return (False, [])
 
-    def Gb(self) -> (bool, [Token]):
+    def Gb(self) -> Tuple[bool, List[Token]]:
         try:
             next_token = self.lexi.__next__()
             if next_token.tipo == TipoToken.SEPARADOR:
-                if next_token.valor == ',':
+                if next_token.valor == ",":
                     (valida, val) = self.Gc()
                     return (valida, [next_token, *val])
             return (False, [next_token])
         except ():
             return (False, [])
 
-    def Gc(self) -> (bool, [Token]):
+    def Gc(self) -> Tuple[bool, List[Token]]:
         try:
             next_token = self.lexi.__next__()
             if next_token.tipo == TipoToken.VARIABLE:
@@ -216,13 +220,13 @@ class Parser:
         try:
             next_token = self.lexi.__next__()
             if next_token.tipo == TipoToken.SEPARADOR:
-                if next_token.valor == ',':
+                if next_token.valor == ",":
                     (valida, val) = self.Ge()
                     return (valida, [next_token, *val])
         except ():
             return self.finSentencia()
 
-    def Ge(self) -> (bool, [Token]):
+    def Ge(self) -> Tuple[bool, List[Token]]:
         try:
             next_token = self.lexi.__next__()
             if next_token.tipo == TipoToken.SEPARADOR:
@@ -232,7 +236,7 @@ class Parser:
         except ():
             return (False, [])
 
-    def Sa(self) -> (bool, [Token]):
+    def Sa(self) -> Tuple[bool, List[Token]]:
         try:
             next_token = self.lexi.__next__()
             if next_token.tipo == TipoToken.VARIABLE:
@@ -245,7 +249,7 @@ class Parser:
         try:
             next_token = self.lexi.__next__()
             if next_token.tipo == TipoToken.SEPARADOR:
-                if next_token.valor == ',':
+                if next_token.valor == ",":
                     (valida, val) = self.Sc()
                     return (valida, [next_token, *val])
             return (False, [next_token])
@@ -265,7 +269,7 @@ class Parser:
         try:
             next_token = self.lexi.__next__()
             if next_token.tipo == TipoToken.SEPARADOR:
-                if next_token.valor == ',':
+                if next_token.valor == ",":
                     (valida, val) = self.Se()
                     return (valida, [next_token, *val])
             return (False, [next_token])
@@ -298,7 +302,7 @@ class Parser:
         try:
             next_token = self.lexi.__next__()
             if next_token.tipo == TipoToken.SEPARADOR:
-                if next_token.valor == ',':
+                if next_token.valor == ",":
                     (valida, val) = self.Ac()
                     return (valida, [next_token, *val])
         except ():
@@ -337,7 +341,7 @@ class Parser:
         try:
             next_token = self.lexi.__next__()
             if next_token.tipo == TipoToken.SEPARADOR:
-                if next_token.valor == ',':
+                if next_token.valor == ",":
                     (valida, val) = self.Tc()
                     return (valida, [next_token, *val])
         except ():
