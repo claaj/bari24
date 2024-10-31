@@ -39,8 +39,14 @@ class Lexer:
         while True:
             linea = self._leer_siguiente_linea()
             if not linea:
-                self.lectura_terminada = True
-                return []
+                pos = self.archivo.tell()
+                siguiente = self.archivo.readline()
+                self.archivo.seek(pos)
+
+                if siguiente == "":
+                    self.archivo_terminado = True
+                    return []
+                continue
 
             if not self._es_comentario(linea):
                 self.linea_actual += 1
@@ -60,7 +66,7 @@ class Lexer:
             if self.lectura_terminada:
                 self.archivo.close()
                 raise StopIteration()
-            
+
             self.tokens_actuales = self.obtener_linea()
             return Token(TipoToken.FINDELINEA, "", self.linea_actual)
 
