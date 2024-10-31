@@ -13,6 +13,7 @@ class Lexer:
         self.linea_actual = 0
         self.simbolos = {}
         self.tokens_actuales = self.obtener_linea()
+        self.lectura_terminada = False
 
     def analizar(self, palabra: str) -> Token:
         tipo_actual: TipoToken
@@ -38,7 +39,8 @@ class Lexer:
         while True:
             linea = self._leer_siguiente_linea()
             if not linea:
-                raise StopIteration()
+                self.lectura_terminada = True
+                return []
 
             if not self._es_comentario(linea):
                 self.linea_actual += 1
@@ -55,6 +57,10 @@ class Lexer:
 
     def __next__(self) -> Token:
         if len(self.tokens_actuales) == 0:
+            if self.lectura_terminada:
+                self.archivo.close()
+                raise StopIteration()
+            
             self.tokens_actuales = self.obtener_linea()
             return Token(TipoToken.FINDELINEA, "", self.linea_actual)
 
