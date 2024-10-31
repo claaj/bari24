@@ -1,9 +1,0 @@
-CARGA archivo1.csv
-@ Este es un comentario
-SEPARA ,
-AGREGA columna1
-INVALIDO acá
-GUARDA archivo2.csv
-
-variable1 = 10
-ójo23 = 3.2
