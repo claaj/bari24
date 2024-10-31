@@ -1,5 +1,5 @@
 import re
-from typing import Set
+from typing import Set, List
 
 from tipos import TipoToken, Token
 
@@ -8,13 +8,11 @@ class Lexer:
     KEYWORDS: Set[str] = {"CARGA", "GUARDA", "SEPARA", "AGREGA", "ENCABEZADO", "TODO"}
     SEPARADORES: Set[str] = {",", ";"}
 
-    def __init__(self, ruta_archivo: str, simbol_table: dict):
+    def __init__(self, ruta_archivo: str):
         self.archivo = open(ruta_archivo, "r")
         self.linea_actual = 0
-        self.simbols = simbol_table
-        self.linea_cache = []
-        self.token_cache = 0
-        self.get_line()
+        self.simbolos = {}
+        self.tokens_actuales = self.obtener_linea()
 
     def analizar(self, palabra: str) -> Token:
         tipo_actual: TipoToken
@@ -24,7 +22,7 @@ class Lexer:
             tipo_actual = TipoToken.NOMBREARCHIVO
         elif re.match(r"^[a-z][a-z0-9]{0,9}$", palabra):
             tipo_actual = TipoToken.VARIABLE
-            self.simbols[palabra] = None
+            self.simbolos[palabra] = None
         elif palabra.isdigit():
             tipo_actual = TipoToken.NUMERO
         elif palabra in self.SEPARADORES:
@@ -36,34 +34,30 @@ class Lexer:
     def __iter__(self):
         return self
 
-    def get_line(self):
-        self.token_cache = 0
-        self.linea_cache = ["@"]
-        while len(self.linea_cache) == 0 or (
-            len(self.linea_cache) > 0 and self.linea_cache[0].startswith("@")
-        ):
-            self.linea_cache = self.archivo.readline()
-            if not self.linea_cache:
+    def obtener_linea(self) -> List[str]:
+        while True:
+            linea = self._leer_siguiente_linea()
+            if not linea:
                 raise StopIteration()
-            self.linea_cache = self.linea_cache.strip().split()
-            self.linea_actual += 1
+
+            if not self._es_comentario(linea):
+                self.linea_actual += 1
+                return linea
+
+    def _leer_siguiente_linea(self) -> List[str]:
+        linea = self.archivo.readline()
+        if not linea:
+            return []
+        return linea.strip().split()
+
+    def _es_comentario(self, linea: List[str]) -> bool:
+        return len(linea) > 0 and linea[0].startswith("@")
 
     def __next__(self) -> Token:
-        token = ""
-        if len(self.linea_cache) == self.token_cache:
-            token = Token(TipoToken.FINDELINEA, "", self.linea_actual)
-            self.get_line()
-        else:
-            token = self.analizar(self.linea_cache[self.token_cache])
-            self.token_cache += 1
-        return token
+        if len(self.tokens_actuales) == 0:
+            self.tokens_actuales = self.obtener_linea()
+            return Token(TipoToken.FINDELINEA, "", self.linea_actual)
 
+        siguiente_token = self.tokens_actuales.pop(0)
 
-if __name__ == "__main__":
-    simbols = {}
-    lexi = Lexer("pruebas.bari24", simbols)
-
-    for tokens in lexi:
-        print(tokens)
-
-    print(simbols)
+        return self.analizar(siguiente_token)
