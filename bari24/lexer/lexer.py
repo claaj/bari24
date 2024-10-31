@@ -1,7 +1,7 @@
 import re
 from typing import Set, List
 
-from tipos import TipoToken, Token
+from .tipos import TipoToken, Token
 
 
 class Lexer:
