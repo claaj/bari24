@@ -37,26 +37,18 @@ class Lexer:
 
     def obtener_linea(self) -> List[str]:
         while True:
-            linea = self._leer_siguiente_linea()
-            if not linea:
-                pos = self.archivo.tell()
-                siguiente = self.archivo.readline()
-                self.archivo.seek(pos)
+            linea = self.archivo.readline()
+            if linea == "":
+                self.lectura_terminada = True
+                return []
 
-                if siguiente == "":
-                    self.archivo_terminado = True
-                    return []
-                continue
-
-            if not self._es_comentario(linea):
+            elif not self._es_comentario(linea):
                 self.linea_actual += 1
-                return linea
+                return linea.strip().split()
 
-    def _leer_siguiente_linea(self) -> List[str]:
-        linea = self.archivo.readline()
-        if not linea:
-            return []
-        return linea.strip().split()
+            else:
+                self.linea_actual += 1
+                continue
 
     def _es_comentario(self, linea: List[str]) -> bool:
         return len(linea) > 0 and linea[0].startswith("@")
@@ -67,9 +59,9 @@ class Lexer:
                 self.archivo.close()
                 raise StopIteration()
 
+            token_eol = Token(TipoToken.FINDELINEA, "", self.linea_actual)
             self.tokens_actuales = self.obtener_linea()
-            return Token(TipoToken.FINDELINEA, "", self.linea_actual)
+            return token_eol 
 
         siguiente_token = self.tokens_actuales.pop(0)
-
         return self.analizar(siguiente_token)
