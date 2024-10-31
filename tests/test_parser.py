@@ -1,4 +1,4 @@
-from bari24.parser import Parser, Sentencia, TipoSetencia
+from bari24.parser import Parser, Sentencia, TipoSentencia
 
 class TestParser:
     pass
