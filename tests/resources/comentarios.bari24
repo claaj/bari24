@@ -1,0 +1,8 @@
+@Esto es un cometario que debe ser ignorado
+CARGA , variable1
+
+@Otro cometario que debe ser ignorado
+SEPARA
+
+@ Otro más pero con espacio antes de @
+ENCABEZADO

@@ -1,1 +1,6 @@
 .venv/
+
+tests/__pycache__/
+.pytest_cache/
+
+bari24/lexer/__pycache__
