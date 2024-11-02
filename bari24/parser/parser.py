@@ -73,37 +73,37 @@ class Parser:
                         (valida, val) = self.Ca()
                         if valida:
                             tipo = TipoSentencia.CARGA
-                            valor = [next_token, *val]
+                        valor = [next_token, *val]
                         pass
                     case "GUARDA":
                         (valida, val) = self.Ga()
                         if valida:
                             tipo = TipoSentencia.GUARDA
-                            valor = [next_token, *val]
+                        valor = [next_token, *val]
                         pass
                     case "SEPARA":
                         (valida, val) = self.Sa()
                         if valida:
                             tipo = TipoSentencia.SEPARA
-                            valor = [next_token, *val]
+                        valor = [next_token, *val]
                         pass
                     case "AGREGA":
                         (valida, val) = self.Aa()
                         if valida:
                             tipo = TipoSentencia.AGREGA
-                            valor = [next_token, *val]
+                        valor = [next_token, *val]
                         pass
                     case "ENCABEZADO":
                         (valida, val) = self.Ea()
                         if valida:
                             tipo = TipoSentencia.ENCABEZADO
-                            valor = [next_token, *val]
+                        valor = [next_token, *val]
                         pass
                     case "TODO":
                         (valida, val) = self.Ta()
                         if valida:
                             tipo = TipoSentencia.TODO
-                            valor = [next_token, *val]
+                        valor = [next_token, *val]
                         pass
         except ():
             pass
@@ -115,7 +115,7 @@ class Parser:
             if next_token.tipo == TipoToken.NOMBREARCHIVO:
                 (valida, val) = self.Cb()
                 return (valida, [next_token, *val])
-            return (False, [next_token])
+            return self.abortar(next_token)
         except ():
             return (False, [])
 
@@ -126,7 +126,7 @@ class Parser:
                 if next_token.valor == ",":
                     (valida, val) = self.Cc()
                     return (valida, [next_token, *val])
-            return (False, [next_token])
+            return self.abortar(next_token)
         except ():
             return (False, [])
 
@@ -136,7 +136,7 @@ class Parser:
             if next_token.tipo == TipoToken.VARIABLE:
                 (valida, val) = self.Cd()
                 return (valida, [next_token, *val])
-            return (False, [next_token])
+            return self.abortar(next_token)
         except ():
             return (False, [])
 
@@ -147,9 +147,11 @@ class Parser:
                 if next_token.valor == ",":
                     (valida, val) = self.Ce()
                     return (valida, [next_token, *val])
-            return (False, [next_token])
+            if next_token.tipo == TipoToken.FINDELINEA:
+                return (True, [])
+            return self.abortar(next_token)
         except ():
-            return self.finSentencia()
+            return (False, [])
 
     def Ce(self) -> Tuple[bool, List[Token]]:
         try:
@@ -157,7 +159,7 @@ class Parser:
             if next_token.tipo == TipoToken.SEPARADOR:
                 (valida, val) = self.finSentencia()
                 return (valida, [next_token, *val])
-            return (False, [next_token])
+            return self.abortar(next_token)
         except ():
             return (False, [])
 
@@ -167,7 +169,7 @@ class Parser:
             if next_token.tipo == TipoToken.NOMBREARCHIVO:
                 (valida, val) = self.Gb()
                 return (valida, [next_token, *val])
-            return (False, [next_token])
+            return self.abortar(next_token)
         except ():
             return (False, [])
 
@@ -178,7 +180,7 @@ class Parser:
                 if next_token.valor == ",":
                     (valida, val) = self.Gc()
                     return (valida, [next_token, *val])
-            return (False, [next_token])
+            return self.abortar(next_token)
         except ():
             return (False, [])
 
@@ -188,7 +190,7 @@ class Parser:
             if next_token.tipo == TipoToken.VARIABLE:
                 (valida, val) = self.Gd()
                 return (valida, [next_token, *val])
-            return (False, [next_token])
+            return self.abortar(next_token)
         except ():
             return (False, [])
 
@@ -199,6 +201,9 @@ class Parser:
                 if next_token.valor == ",":
                     (valida, val) = self.Ge()
                     return (valida, [next_token, *val])
+            if next_token.tipo == TipoToken.FINDELINEA:
+                return (True, [])
+            return self.abortar(next_token)
         except ():
             return self.finSentencia()
 
@@ -208,7 +213,7 @@ class Parser:
             if next_token.tipo == TipoToken.SEPARADOR:
                 (valida, val) = self.finSentencia()
                 return (valida, [next_token, *val])
-            return (False, [next_token])
+            return self.abortar(next_token)
         except ():
             return (False, [])
 
@@ -218,6 +223,7 @@ class Parser:
             if next_token.tipo == TipoToken.VARIABLE:
                 (valida, val) = self.Sb()
                 return (valida, [next_token, *val])
+            return self.abortar(next_token)
         except ():
             return (False, [])
 
@@ -228,7 +234,7 @@ class Parser:
                 if next_token.valor == ",":
                     (valida, val) = self.Sc()
                     return (valida, [next_token, *val])
-            return (False, [next_token])
+            return self.abortar(next_token)
         except ():
             return (False, [])
 
@@ -238,6 +244,7 @@ class Parser:
             if next_token.tipo == TipoToken.VARIABLE:
                 (valida, val) = self.Sd()
                 return (valida, [next_token, *val])
+            return self.abortar(next_token)
         except ():
             return (False, [])
 
@@ -248,7 +255,7 @@ class Parser:
                 if next_token.valor == ",":
                     (valida, val) = self.Se()
                     return (valida, [next_token, *val])
-            return (False, [next_token])
+            return self.abortar(next_token)
         except ():
             return (False, [])
 
@@ -261,6 +268,7 @@ class Parser:
             if next_token.tipo == TipoToken.NUMERO:
                 (valida, val) = self.finSentencia()
                 return (valida, [next_token, *val])
+            return self.abortar(next_token)
         except ():
             return (False, [])
 
@@ -270,7 +278,7 @@ class Parser:
             if next_token.tipo == TipoToken.VARIABLE:
                 (valida, val) = self.Ab()
                 return (valida, [next_token, *val])
-            return (False, [next_token])
+            return self.abortar(next_token)
         except ():
             return (False, [])
 
@@ -281,6 +289,7 @@ class Parser:
                 if next_token.valor == ",":
                     (valida, val) = self.Ac()
                     return (valida, [next_token, *val])
+            return self.abortar(next_token)
         except ():
             return (False, [])
 
@@ -290,7 +299,7 @@ class Parser:
             if next_token.tipo == TipoToken.VARIABLE:
                 (valida, val) = self.finSentencia()
                 return (valida, [next_token, *val])
-            return (False, [next_token])
+            return self.abortar(next_token)
         except ():
             return (False, [])
 
@@ -300,6 +309,7 @@ class Parser:
             if next_token.tipo == TipoToken.VARIABLE:
                 (valida, val) = self.finSentencia()
                 return (valida, [next_token, *val])
+            return self.abortar(next_token)
         except ():
             return (False, [])
 
@@ -309,7 +319,7 @@ class Parser:
             if next_token.tipo == TipoToken.VARIABLE:
                 (valida, val) = self.Tb()
                 return (valida, [next_token, *val])
-            return (False, [next_token])
+            return self.abortar(next_token)
         except ():
             return (False, [])
 
@@ -320,6 +330,7 @@ class Parser:
                 if next_token.valor == ",":
                     (valida, val) = self.Tc()
                     return (valida, [next_token, *val])
+            return self.abortar(next_token)
         except ():
             return (False, [])
 
@@ -329,7 +340,7 @@ class Parser:
             if next_token.tipo == TipoToken.NUMERO:
                 (valida, val) = self.finSentencia()
                 return (valida, [next_token, *val])
-            return (False, [next_token])
+            return self.abortar(next_token)
         except ():
             return (False, [])
 
@@ -341,3 +352,9 @@ class Parser:
         except ():
             pass
         return (False, [])
+
+    def abortar(self, next_token: Token) -> (bool, [Token]):
+        if next_token.tipo == TipoToken.FINDELINEA:
+            return (False, [])
+        (_, lista) = self.abortar(self.lexi.__next__())
+        return (False, [next_token, *lista])

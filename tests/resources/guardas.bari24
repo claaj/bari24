@@ -1,0 +1,5 @@
+GUARDA arch1.csv , arch1
+GUARDA arch2.csv , arch2 , ,
+GUARDA arch3.csv , arch3 , ;
+GUARDA arch4 , arch4.csv , ;
+GUARDA arch5.csv ; arch5

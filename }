@@ -198,27 +198,27 @@ class TestParser:
         esperados = [
             Sentencia(TipoSentencia.TODO, [
                       Token(TipoToken.KEYWORD, "TODO", 1),
-                      Token(TipoToken.VARIABLE, "var1", 1),
+                      Token(TipoToken.VARIABLE, "var11", 1),
                       Token(TipoToken.SEPARADOR, ",", 1),
-                      Token(TipoToken.NUMERO, "5", 1),
+                      Token(TipoToken.VARIABLE, "var12", 1),
                       ], 1),
-            Sentencia(TipoSentencia.INVALIDO, [
+            Sentencia(TipoSentencia.TODO, [
                       Token(TipoToken.KEYWORD, "TODO", 2),
-                      Token(TipoToken.VARIABLE, "var21", 2),
+                      Token(TipoToken.VARIABLE, "var11", 2),
                       Token(TipoToken.SEPARADOR, ",", 2),
-                      Token(TipoToken.VARIABLE, "var22", 2),
+                      Token(TipoToken.VARIABLE, "var12", 2),
                       ], 2),
             Sentencia(TipoSentencia.INVALIDO, [
                       Token(TipoToken.KEYWORD, "TODO", 3),
-                      Token(TipoToken.VARIABLE, "var3", 3),
+                      Token(TipoToken.VARIABLE, "var21", 3),
                       Token(TipoToken.SEPARADOR, ";", 3),
-                      Token(TipoToken.NUMERO, "5", 3),
+                      Token(TipoToken.VARIABLE, "var22", 3),
                       ], 3),
             Sentencia(TipoSentencia.INVALIDO, [
                       Token(TipoToken.KEYWORD, "TODO", 4),
-                      Token(TipoToken.NOMBREARCHIVO, "var4.csv", 4),
+                      Token(TipoToken.VARIABLE, "var31", 4),
                       Token(TipoToken.SEPARADOR, ",", 4),
-                      Token(TipoToken.NUMERO, "5", 4),
+                      Token(TipoToken.NOMBREARCHIVO, "var32.csv", 4),
                       ], 4),
         ]
 

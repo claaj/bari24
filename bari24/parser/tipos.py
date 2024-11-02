@@ -24,3 +24,13 @@ class Sentencia:
             f"Sentencia(Tipo: {self.tipo}, Valor: {self.valor},"
             + f" Linea: {self.num_linea})"
         )
+
+    def __eq__(self, otro: object) -> bool:
+        return (
+            hasattr(otro, "tipo")
+            and hasattr(otro, "valor")
+            and hasattr(otro, "num_linea")
+            and self.tipo == otro.tipo
+            and self.valor == otro.valor
+            and self.num_linea == otro.num_linea
+        )

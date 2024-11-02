@@ -1,0 +1,5 @@
+CARGA arch1.csv , arch1
+CARGA arch2.csv , arch2 , ,
+CARGA arch3.csv , arch3 , ;
+CARGA arch4 , arch4.csv , ;
+CARGA arch5.csv ; arch5

@@ -24,7 +24,15 @@
 
 ## Parser
 
-FIXME
+### Sintaxis del lenguaje:
+
+- `CARGA`::= **CARGA**`<nomArch>`**,**`<nomVariable>`[**,**`<separador>`]
+- `GUARDA`::= **GUARDA**`<nomArch>`**,**`<nomVariable>`[**,**`<separador>`]
+- `SEPARA`::= **SEPARA**`<nomVariable1>`**,**`<nomVariable2>`**,**(`<nomColumna>`|`<numColumna>`)
+- `AGREGA`::= **AGREGA**`<nomVariable1>`**,**`<nomVariable2>`
+- `ENCABEZADO`::= **ENCABEZADO**`<nomVariable>`
+- `TODO`::= **TODO**`<nomVariable>`**,**`<cantLineas>`
+- `<cantLineas>,<numColumna>`::= `<numero>`
 
 ## Probrar el proyecto
 
