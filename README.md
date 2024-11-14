@@ -41,6 +41,7 @@ Por lo tanto tan solo es posible correr los tests.
 
 Test soportados al momento:
 - Lexer
+- Parser
 
 Para poder probar el proyecto es necesario setear el entorno de desarrollo.
 
