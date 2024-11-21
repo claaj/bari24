@@ -6,4 +6,4 @@ tests/__pycache__/
 bari24/lexer/__pycache__
 bari24/parser/__pycache__
 
-bari24/**/*pycache*/
+**/*pycache*/
