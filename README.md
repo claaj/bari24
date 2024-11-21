@@ -42,6 +42,7 @@ Por lo tanto tan solo es posible correr los tests.
 Test soportados al momento:
 - Lexer
 - Parser
+- Translator
 
 Para poder probar el proyecto es necesario setear el entorno de desarrollo.
 
@@ -75,5 +76,5 @@ pip install -r requirements.txt
 Para correr los tests es necesario ejecutar el siguente comando:
 
 ~~~sh
-pytest tests/ -vvv -s
+pytest tests/ -vvv --capture=sys
 ~~~

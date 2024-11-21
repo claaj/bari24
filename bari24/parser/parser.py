@@ -60,6 +60,16 @@ class Parser:
     def __iter__(self):
         return self
 
+    def parse_valor(self, valor: List[Token]) -> List[str | int]:
+        ret = []
+        for index, token in enumerate(valor):
+            if index % 2 == 1:
+                app = token.valor
+                if token.tipo == TipoToken.NUMERO:
+                    app = int(app)
+                ret.append(app)
+        return ret
+
     def __next__(self) -> Sentencia:
         tipo = TipoSentencia.INVALIDO
         valor = []
@@ -71,39 +81,45 @@ class Parser:
                 match next_token.valor:
                     case "CARGA":
                         (valida, val) = self.Ca()
+                        valor = [next_token, *val]
                         if valida:
                             tipo = TipoSentencia.CARGA
-                        valor = [next_token, *val]
+                            valor = self.parse_valor(valor)
                         pass
                     case "GUARDA":
                         (valida, val) = self.Ga()
+                        valor = [next_token, *val]
                         if valida:
                             tipo = TipoSentencia.GUARDA
-                        valor = [next_token, *val]
+                            valor = self.parse_valor(valor)
                         pass
                     case "SEPARA":
                         (valida, val) = self.Sa()
+                        valor = [next_token, *val]
                         if valida:
                             tipo = TipoSentencia.SEPARA
-                        valor = [next_token, *val]
+                            valor = self.parse_valor(valor)
                         pass
                     case "AGREGA":
                         (valida, val) = self.Aa()
+                        valor = [next_token, *val]
                         if valida:
                             tipo = TipoSentencia.AGREGA
-                        valor = [next_token, *val]
+                            valor = self.parse_valor(valor)
                         pass
                     case "ENCABEZADO":
                         (valida, val) = self.Ea()
+                        valor = [next_token, *val]
                         if valida:
                             tipo = TipoSentencia.ENCABEZADO
-                        valor = [next_token, *val]
+                            valor = self.parse_valor(valor)
                         pass
                     case "TODO":
                         (valida, val) = self.Ta()
+                        valor = [next_token, *val]
                         if valida:
                             tipo = TipoSentencia.TODO
-                        valor = [next_token, *val]
+                            valor = self.parse_valor(valor)
                         pass
         except ():
             pass
